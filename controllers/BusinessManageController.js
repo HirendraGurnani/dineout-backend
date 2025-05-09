@@ -17,8 +17,22 @@ routes.post("/addhotels", async (req, res) => {
   } else {
     res.send({ success: false });
   }
-  // console.log(req.body);
-  // console.log(req.headers);
+});
+
+routes.get("/hotellist", async (req, res) => {
+  if (req.headers.authorization) {
+    let token = req.headers.authorization;
+    let obj = jwt.decode(token, "hello");
+    if (obj) {
+      // console.log(obj);
+      let result = await Hotel.find({ business_id: obj.id });
+      res.send(result);
+    } else {
+      res.send({ success: false });
+    }
+  } else {
+    res.send({ success: false });
+  }
 });
 
 module.exports = routes;
